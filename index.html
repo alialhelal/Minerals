@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار كيمياء المعادن</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #6e7f8b 0%, #2c3e50 100%);
+        }
+        .card-bg {
+            background-color: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, #f2c94c, #f2994a);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(242, 201, 76, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(242, 201, 76, 0.4);
+        }
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid #f2c94c;
+            color: #f2c94c;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #f2c94c;
+            color: #2c3e50;
+        }
+        .section-hidden {
+            display: none;
+        }
+        .answer-option {
+            transition: all 0.2s ease-in-out;
+        }
+        .answer-option:hover {
+            background-color: rgba(242, 201, 76, 0.2);
+            transform: scale(1.02);
+        }
+        .correct {
+             background-color: rgba(46, 204, 113, 0.3) !important;
+             border-color: #2ecc71 !important;
+        }
+        .incorrect {
+            background-color: rgba(231, 76, 60, 0.3) !important;
+            border-color: #e74c3c !important;
+        }
+    </style>
+</head>
+<body class="gradient-bg text-white">
+
+    <!-- Main Container -->
+    <div id="app-container" class="min-h-screen flex flex-col items-center justify-center p-4">
+
+        <!-- Header -->
+        <header id="app-header" class="w-full max-w-5xl mx-auto flex justify-between items-center p-4 mb-8">
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <i class="fas fa-gem text-3xl text-yellow-400"></i>
+                <h1 class="text-2xl font-bold">اختبار كيمياء المعادن</h1>
+            </div>
+            <div id="auth-buttons" class="flex items-center space-x-2 space-x-reverse">
+                <button id="login-btn-nav" class="btn-secondary font-bold py-2 px-4 rounded-lg">دخول</button>
+                <button id="signup-btn-nav" class="btn-primary font-bold py-2 px-4 rounded-lg">تسجيل</button>
+            </div>
+            <div id="user-info" class="hidden items-center space-x-3 space-x-reverse">
+                 <span id="user-display-name" class="font-semibold"></span>
+                 <button id="dashboard-btn" class="btn-secondary font-bold py-2 px-4 rounded-lg"><i class="fas fa-chart-bar"></i> لوحة التحكم</button>
+                 <button id="logout-btn" class="btn-primary font-bold py-2 px-4 rounded-lg"><i class="fas fa-sign-out-alt"></i> خروج</button>
+            </div>
+        </header>
+
+        <!-- Main Content Sections -->
+        <main id="main-content" class="w-full">
+            
+            <!-- Home Section -->
+            <section id="home-section" class="text-center">
+                <h2 class="text-5xl font-extrabold mb-4 leading-tight">اكتشف عالم المعادن</h2>
+                <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">اختبر معلوماتك حول الخصائص الكيميائية والفيزيائية للمعادن في تجربة تعليمية تفاعلية.</p>
+                <div class="space-x-4 space-x-reverse">
+                    <button id="start-quiz-btn" class="btn-primary text-lg font-bold py-3 px-8 rounded-lg">ابدأ الاختبار</button>
+                    <button id="view-info-btn" class="btn-secondary text-lg font-bold py-3 px-8 rounded-lg">سجل وانضم إلينا</button>
+                </div>
+
+                <div class="mt-16">
+                    <h3 class="text-3xl font-bold mb-8">لماذا اختبار كيمياء المعادن؟</h3>
+                    <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                        <div class="card-bg p-6 rounded-2xl text-center">
+                            <div class="text-yellow-400 text-5xl mb-4"><i class="fas fa-flask"></i></div>
+                            <h4 class="text-xl font-bold mb-2">أسئلة كيميائية</h4>
+                            <p class="text-gray-300">أسئلة مدروسة بعناية تغطي خصائص وتصنيفات المعادن الأساسية.</p>
+                        </div>
+                        <div class="card-bg p-6 rounded-2xl text-center">
+                            <div class="text-yellow-400 text-5xl mb-4"><i class="fas fa-chart-line"></i></div>
+                            <h4 class="text-xl font-bold mb-2">تتبع أدائك</h4>
+                            <p class="text-gray-300">راقب تطور أدائك بإحصائيات مفصلة عن نتائجك في الاختبارات.</p>
+                        </div>
+                        <div class="card-bg p-6 rounded-2xl text-center">
+                            <div class="text-yellow-400 text-5xl mb-4"><i class="fas fa-atom"></i></div>
+                            <h4 class="text-xl font-bold mb-2">تجربة تفاعلية</h4>
+                            <p class="text-gray-300">تجربة تعليمية ممتعة تساعدك على فهم الفروق بين أنواع المعادن بشكل أفضل.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="stats-section-public" class="mt-16 flex justify-center gap-8 md:gap-16 text-center">
+                    <div>
+                        <p class="text-4xl font-bold text-yellow-400">10</p>
+                        <p class="text-gray-300">سؤال كلي</p>
+                    </div>
+                    <div>
+                        <p class="text-4xl font-bold text-yellow-400">1</p>
+                        <p class="text-gray-300">مستخدم مسجل</p>
+                    </div>
+                    <div>
+                        <p class="text-4xl font-bold text-yellow-400">1</p>
+                        <p class="text-gray-300">محاولة اختبار</p>
+                    </div>
+                </div>
+
+                <div class="mt-16 max-w-5xl mx-auto">
+                     <h3 class="text-3xl font-bold mb-4">عن اختبار علوم المعادن</h3>
+                     <p class="text-lg text-gray-300 mb-8">يهدف هذا الاختبار إلى تعزيز فهمك للفروق الأساسية بين المعادن الفلزية واللافلزية، من خلال مجموعة متنوعة من الأسئلة العلمية، ستتمكن من اختبار معرفتك وتطوير فهمك لعلم المواد الكيميائي. الاختبار مصمم ليكون تعليميًا وتفاعليًا، حيث يمكنك إعادة المحاولة عدة مرات لتحسين نتائجك ومتابعة تقدمك عبر الوقت.</p>
+                     <div class="flex flex-col md:flex-row justify-center gap-8">
+                        <div class="border-4 border-green-400 p-6 rounded-xl flex-1 card-bg">
+                            <div class="text-green-400 text-4xl mb-3"><i class="fas fa-cogs"></i></div>
+                            <h4 class="text-2xl font-bold mb-2">معادن فلزية</h4>
+                            <p>تتميز باللمعان والبريق، جيدة التوصيل للحرارة والكهرباء.</p>
+                        </div>
+                        <div class="border-4 border-red-400 p-6 rounded-xl flex-1 card-bg">
+                            <div class="text-red-400 text-4xl mb-3"><i class="fas fa-mountain"></i></div>
+                            <h4 class="text-2xl font-bold mb-2">معادن لا فلزية</h4>
+                            <p>عادة ما تكون هشة ورديئة التوصيل للحرارة والكهرباء.</p>
+                        </div>
+                     </div>
+                </div>
+            </section>
+
+            <!-- Auth Section (Login/Signup) -->
+            <section id="auth-section" class="section-hidden max-w-md mx-auto">
+                <div class="card-bg p-8 rounded-2xl">
+                    <h2 id="auth-title" class="text-3xl font-bold text-center mb-6">تسجيل الدخول</h2>
+                    <form id="auth-form">
+                        <div class="mb-4">
+                            <label for="username" class="block mb-2 font-semibold">اسم المستخدم</label>
+                            <input type="text" id="username" class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:border-yellow-400" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="password" class="block mb-2 font-semibold">كلمة المرور</label>
+                            <input type="password" id="password" class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:border-yellow-400" required>
+                        </div>
+                        <p id="auth-error" class="text-red-400 text-center mb-4"></p>
+                        <button type="submit" id="auth-submit-btn" class="w-full btn-primary font-bold py-3 px-4 rounded-lg">دخول</button>
+                    </form>
+                    <p class="text-center mt-4">
+                        <span id="auth-switch-text">ليس لديك حساب؟</span>
+                        <button id="auth-switch-btn" class="text-yellow-400 hover:underline font-semibold">أنشئ حسابًا جديدًا</button>
+                    </p>
+                </div>
+            </section>
+
+            <!-- Quiz Section -->
+            <section id="quiz-section" class="section-hidden max-w-3xl mx-auto">
+                 <div class="card-bg p-8 rounded-2xl">
+                    <div id="quiz-header" class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold">سؤال <span id="question-number">1</span> من <span id="total-questions">10</span></h2>
+                        <div class="text-lg font-bold">النتيجة: <span id="score">0</span></div>
+                    </div>
+                    <div id="question-container" class="mb-6">
+                        <p id="question-text" class="text-2xl font-semibold mb-6 text-center"></p>
+                        <div id="answer-options" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Answer options will be injected here by JS -->
+                        </div>
+                    </div>
+                    <div id="feedback-container" class="text-center mt-4">
+                        <p id="feedback-text" class="text-xl font-bold"></p>
+                        <button id="next-question-btn" class="hidden btn-primary font-bold py-2 px-6 rounded-lg mt-4">السؤال التالي</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quiz Results Section -->
+            <section id="results-section" class="section-hidden text-center max-w-lg mx-auto">
+                <div class="card-bg p-8 rounded-2xl">
+                    <h2 class="text-4xl font-bold mb-4">اكتمل الاختبار!</h2>
+                    <p class="text-xl mb-2">نتيجتك النهائية هي:</p>
+                    <p class="text-6xl font-extrabold text-yellow-400 mb-6"><span id="final-score"></span> / <span id="total-score"></span></p>
+                    <p id="result-message" class="text-lg mb-8"></p>
+                    <div class="space-x-4 space-x-reverse">
+                        <button id="restart-quiz-btn" class="btn-primary text-lg font-bold py-3 px-8 rounded-lg">أعد الاختبار</button>
+                        <button id="back-to-home-btn" class="btn-secondary text-lg font-bold py-3 px-8 rounded-lg">العودة للرئيسية</button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Dashboard Section -->
+            <section id="dashboard-section" class="section-hidden max-w-4xl mx-auto">
+                <div class="card-bg p-8 rounded-2xl">
+                    <h2 class="text-3xl font-bold mb-6">لوحة التحكم</h2>
+                    <div class="grid md:grid-cols-3 gap-6 text-center">
+                        <div class="bg-gray-700 p-6 rounded-lg">
+                            <p class="text-lg text-gray-400">إجمالي المحاولات</p>
+                            <p id="total-attempts" class="text-4xl font-bold text-yellow-400">0</p>
+                        </div>
+                        <div class="bg-gray-700 p-6 rounded-lg">
+                            <p class="text-lg text-gray-400">أعلى نتيجة</p>
+                            <p id="high-score" class="text-4xl font-bold text-yellow-400">0</p>
+                        </div>
+                        <div class="bg-gray-700 p-6 rounded-lg">
+                            <p class="text-lg text-gray-400">متوسط النتيجة</p>
+                            <p id="average-score" class="text-4xl font-bold text-yellow-400">0</p>
+                        </div>
+                    </div>
+                     <div class="mt-8">
+                        <h3 class="text-2xl font-bold mb-4">سجل المحاولات</h3>
+                        <div id="history-container" class="bg-gray-700 rounded-lg p-4 h-64 overflow-y-auto">
+                           <!-- History items will be injected here -->
+                           <p class="text-gray-400 text-center">لا توجد محاولات سابقة.</p>
+                        </div>
+                    </div>
+                    <div class="text-center mt-8">
+                        <button id="dashboard-back-btn" class="btn-secondary text-lg font-bold py-2 px-6 rounded-lg">العودة للرئيسية</button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="w-full max-w-5xl mx-auto text-center text-gray-400 mt-12 p-4">
+            <p>© 2025 اختبار كيمياء المعادن. جميع الحقوق محفوظة للأستاذ علي الهلال.</p>
+            <p>
+                <a href="https://linktr.ee/aliabdullahalhelal" target="_blank" class="hover:text-yellow-400 hover:underline">
+                    © حساباتي على شبكة الانترنت العالمية
+                </a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- Local Storage Based Script -->
+    <script>
+        // --- DOM Elements ---
+        const sections = {
+            home: document.getElementById('home-section'),
+            auth: document.getElementById('auth-section'),
+            quiz: document.getElementById('quiz-section'),
+            results: document.getElementById('results-section'),
+            dashboard: document.getElementById('dashboard-section')
+        };
+        const authButtons = document.getElementById('auth-buttons');
+        const userInfo = document.getElementById('user-info');
+        const userDisplayName = document.getElementById('user-display-name');
+        
+        // --- Quiz Data ---
+        const quizQuestions = [
+            { question: "ما هو أصلب معدن معروف على وجه الأرض؟", options: ["الكوارتز", "التوباز", "الألماس", "الياقوت"], answer: "الألماس" },
+            { question: "أي من هذه المعادن هو المكون الرئيسي للجرانيت؟", options: ["الكوارتز", "الكالسيت", "الهاليت", "الجبس"], answer: "الكوارتز" },
+            { question: "الذهب والفضة هما أمثلة على...", options: ["معادن سيليكاتية", "معادن ثمينة", "معادن كبريتيدية", "أكاسيد"], answer: "معادن ثمينة" },
+            { question: "ما هو المعدن الذي يستخدم في صناعة أقلام الرصاص؟", options: ["الرصاص", "الجرافيت", "الفحم", "الهيماتيت"], answer: "الجرافيت" },
+            { question: "أي معدن يُعرف أيضًا باسم 'ملح الطعام'؟", options: ["الهاليت", "الفلوريت", "الكوارتز", "الأباتيت"], answer: "الهاليت" },
+            { question: "ما هو لون معدن الملاكيت المميز؟", options: ["أزرق", "أحمر", "أصفر", "أخضر"], answer: "أخضر" },
+            { question: "أي من هذه المعادن له خصائص مغناطيسية قوية؟", options: ["الذهب", "النحاس", "المغنتيت", "الكبريت"], answer: "المغنتيت" },
+            { question: "مقياس موس يستخدم لتحديد أي خاصية للمعدن؟", options: ["اللون", "الصلادة", "الكثافة", "البريق"], answer: "الصلادة" },
+            { question: "ما هو العنصر الأكثر وفرة في قشرة الأرض؟", options: ["الأكسجين", "السيليكون", "الألومنيوم", "الحديد"], answer: "الأكسجين" },
+            { question: "معدن البيريت يُعرف أحيانًا باسم 'ذهب الحمقى' بسبب لونه...", options: ["الأحمر النحاسي", "الفضي اللامع", "الأصفر النحاسي الباهت", "الأبيض الحليبي"], answer: "الأصفر النحاسي الباهت" }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let currentUser = null;
+
+        // --- Navigation Logic ---
+        function showSection(sectionId) {
+            Object.values(sections).forEach(section => section.classList.add('section-hidden'));
+            if (sections[sectionId]) {
+                sections[sectionId].classList.remove('section-hidden');
+            }
+        }
+
+        // --- UI Update Logic ---
+        function updateUIAfterAuthStateChange() {
+            if (currentUser) {
+                authButtons.classList.add('hidden');
+                userInfo.classList.remove('hidden');
+                userInfo.classList.add('flex');
+                userDisplayName.textContent = `مرحباً، ${currentUser.username}`;
+            } else {
+                authButtons.classList.remove('hidden');
+                userInfo.classList.add('hidden');
+                userInfo.classList.remove('flex');
+                userDisplayName.textContent = '';
+            }
+        }
+        
+        // --- Auth Functions (localStorage) ---
+        function handleRegister(username, password) {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const userExists = users.find(u => u.username === username);
+
+            if (userExists) {
+                return { success: false, message: 'اسم المستخدم هذا مسجل بالفعل.' };
+            }
+
+            const newUser = {
+                id: Date.now(),
+                username: username,
+                password: password, // Note: Storing passwords in plaintext is not secure for real applications.
+                quizzes: []
+            };
+
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            currentUser = newUser;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            return { success: true };
+        }
+
+        function handleLogin(username, password) {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.username === username && u.password === password);
+
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                return { success: true };
+            } else {
+                return { success: false, message: 'اسم المستخدم أو كلمة المرور غير صحيحة.' };
+            }
+        }
+        
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            updateUIAfterAuthStateChange();
+            showSection('home');
+        }
+
+        function checkLoginStatus() {
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+            }
+            updateUIAfterAuthStateChange();
+        }
+
+        // --- Auth Form Logic ---
+        const authForm = document.getElementById('auth-form');
+        const authTitle = document.getElementById('auth-title');
+        const authSubmitBtn = document.getElementById('auth-submit-btn');
+        const authSwitchBtn = document.getElementById('auth-switch-btn');
+        const authSwitchText = document.getElementById('auth-switch-text');
+        const authError = document.getElementById('auth-error');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        let isLogin = true;
+
+        function toggleAuthMode() {
+            isLogin = !isLogin;
+            authTitle.textContent = isLogin ? 'تسجيل الدخول' : 'إنشاء حساب جديد';
+            authSubmitBtn.textContent = isLogin ? 'دخول' : 'تسجيل';
+            authSwitchText.textContent = isLogin ? 'ليس لديك حساب؟' : 'لديك حساب بالفعل؟';
+            authSwitchBtn.textContent = isLogin ? 'أنشئ حسابًا جديدًا' : 'سجل الدخول';
+            authError.textContent = '';
+            authForm.reset();
+        }
+
+        authSwitchBtn.addEventListener('click', toggleAuthMode);
+
+        authForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+            authError.textContent = '';
+
+            if (!username || !password) {
+                authError.textContent = 'يرجى إدخال اسم المستخدم وكلمة المرور.';
+                return;
+            }
+
+            const result = isLogin ? handleLogin(username, password) : handleRegister(username, password);
+
+            if (result.success) {
+                updateUIAfterAuthStateChange();
+                showSection('home');
+            } else {
+                authError.textContent = result.message;
+            }
+        });
+        
+        // --- Navigation Buttons ---
+        document.getElementById('login-btn-nav').addEventListener('click', () => { if (!isLogin) toggleAuthMode(); showSection('auth'); });
+        document.getElementById('signup-btn-nav').addEventListener('click', () => { if (isLogin) toggleAuthMode(); showSection('auth'); });
+        document.getElementById('view-info-btn').addEventListener('click', () => { if (isLogin) toggleAuthMode(); showSection('auth'); });
+        document.getElementById('logout-btn').addEventListener('click', logout);
+        document.getElementById('back-to-home-btn').addEventListener('click', () => showSection('home'));
+        document.getElementById('dashboard-back-btn').addEventListener('click', () => showSection('home'));
+        document.getElementById('dashboard-btn').addEventListener('click', () => { loadDashboardData(); showSection('dashboard'); });
+
+        // --- Quiz Logic ---
+        const startQuizBtn = document.getElementById('start-quiz-btn');
+        const questionNumber = document.getElementById('question-number');
+        const totalQuestions = document.getElementById('total-questions');
+        const scoreDisplay = document.getElementById('score');
+        const questionText = document.getElementById('question-text');
+        const answerOptionsContainer = document.getElementById('answer-options');
+        const feedbackText = document.getElementById('feedback-text');
+        const nextQuestionBtn = document.getElementById('next-question-btn');
+        
+        startQuizBtn.addEventListener('click', () => {
+            if (!currentUser) {
+                showSection('auth');
+                return;
+            }
+            startQuiz();
+        });
+
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            scoreDisplay.textContent = score;
+            showSection('quiz');
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            nextQuestionBtn.classList.add('hidden');
+            feedbackText.textContent = '';
+            const question = quizQuestions[currentQuestionIndex];
+            questionNumber.textContent = currentQuestionIndex + 1;
+            totalQuestions.textContent = quizQuestions.length;
+            questionText.textContent = question.question;
+            
+            answerOptionsContainer.innerHTML = '';
+            const shuffledOptions = [...question.options].sort(() => Math.random() - 0.5);
+
+            shuffledOptions.forEach(option => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.classList.add('answer-option', 'w-full', 'p-4', 'rounded-lg', 'border-2', 'border-gray-500', 'text-left');
+                button.onclick = () => selectAnswer(button, option, question.answer);
+                answerOptionsContainer.appendChild(button);
+            });
+        }
+        
+        function selectAnswer(button, selectedOption, correctAnswer) {
+            const buttons = answerOptionsContainer.querySelectorAll('button');
+            buttons.forEach(btn => btn.disabled = true);
+            nextQuestionBtn.classList.remove('hidden');
+
+            if (selectedOption === correctAnswer) {
+                score++;
+                scoreDisplay.textContent = score;
+                button.classList.add('correct');
+                feedbackText.textContent = 'إجابة صحيحة!';
+                feedbackText.classList.add('text-green-400');
+                feedbackText.classList.remove('text-red-400');
+            } else {
+                button.classList.add('incorrect');
+                feedbackText.textContent = `إجابة خاطئة. الصحيحة هي: ${correctAnswer}`;
+                feedbackText.classList.add('text-red-400');
+                feedbackText.classList.remove('text-green-400');
+                buttons.forEach(btn => {
+                    if (btn.textContent === correctAnswer) {
+                        btn.classList.add('correct');
+                    }
+                });
+            }
+        }
+
+        nextQuestionBtn.addEventListener('click', () => {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizQuestions.length) {
+                displayQuestion();
+            } else {
+                showResults();
+            }
+        });
+        
+        document.getElementById('restart-quiz-btn').addEventListener('click', startQuiz);
+
+        function showResults() {
+            showSection('results');
+            document.getElementById('final-score').textContent = score;
+            document.getElementById('total-score').textContent = quizQuestions.length;
+            
+            const percentage = (score / quizQuestions.length) * 100;
+            const resultMessage = document.getElementById('result-message');
+            if (percentage >= 80) resultMessage.textContent = "ممتاز! أنت خبير في المعادن.";
+            else if (percentage >= 50) resultMessage.textContent = "جيد جدًا! لديك معرفة جيدة بالمعادن.";
+            else resultMessage.textContent = "لا بأس، حاول مرة أخرى لتطوير معلوماتك!";
+            
+            // Save results to localStorage
+            if (currentUser) {
+                const quizResult = {
+                    score: score,
+                    total: quizQuestions.length,
+                    timestamp: new Date().toISOString()
+                };
+                
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const userIndex = users.findIndex(u => u.id === currentUser.id);
+                if (userIndex !== -1) {
+                    users[userIndex].quizzes.push(quizResult);
+                    localStorage.setItem('users', JSON.stringify(users));
+                    
+                    // Update current user object as well
+                    currentUser.quizzes.push(quizResult);
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                }
+            }
+        }
+        
+        // --- Dashboard Logic ---
+        function loadDashboardData() {
+            if (!currentUser) return;
+
+            const totalAttemptsDisplay = document.getElementById('total-attempts');
+            const highScoreDisplay = document.getElementById('high-score');
+            const averageScoreDisplay = document.getElementById('average-score');
+            const historyContainer = document.getElementById('history-container');
+            
+            const attempts = currentUser.quizzes || [];
+
+            if (attempts.length === 0) {
+                totalAttemptsDisplay.textContent = '0';
+                highScoreDisplay.textContent = '0';
+                averageScoreDisplay.textContent = '0';
+                historyContainer.innerHTML = '<p class="text-gray-400 text-center">لا توجد محاولات سابقة.</p>';
+                return;
+            }
+
+            totalAttemptsDisplay.textContent = attempts.length;
+            const highScore = Math.max(...attempts.map(a => a.score), 0);
+            highScoreDisplay.textContent = highScore;
+            const totalScore = attempts.reduce((sum, a) => sum + a.score, 0);
+            const averageScore = (totalScore / attempts.length).toFixed(1);
+            averageScoreDisplay.textContent = averageScore;
+
+            historyContainer.innerHTML = '';
+            attempts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+            attempts.forEach(attempt => {
+                const attemptDiv = document.createElement('div');
+                attemptDiv.className = 'flex justify-between items-center p-3 border-b border-gray-600';
+                const date = new Date(attempt.timestamp).toLocaleString('ar-EG');
+                attemptDiv.innerHTML = `
+                    <p>${date}</p>
+                    <p class="font-bold text-yellow-400">النتيجة: ${attempt.score}/${attempt.total}</p>
+                `;
+                historyContainer.appendChild(attemptDiv);
+            });
+        }
+
+        // --- Initial Load ---
+        document.addEventListener('DOMContentLoaded', () => {
+            checkLoginStatus();
+            showSection('home');
+        });
+
+    </script>
+</body>
+</html>
